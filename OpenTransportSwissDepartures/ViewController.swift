@@ -20,8 +20,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Get a free token here https://opentransportdata.swiss/dev-dashboard
-        let apiToken = "VDV_431_KEY"
+        // WARNING: This token is used for the demo project and can hit the limits quite fast
+        // Consider getting a new one from here https://opentransportdata.swiss/dev-dashboard
+        let apiToken = "57c5dbbbf1fe4d0001000018c80803a382b64bf3583d5f1801a5959d"
         networkController = ODPSwissDeparturesNetworkController(token: apiToken)
         
         searchBar.delegate = self

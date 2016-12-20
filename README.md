@@ -8,7 +8,7 @@ The project is developed with Xcode 8.1, Swift 3.x and supports iOS 8.4+ devices
 
 - clone / download / unzip a copy of this repo on your machine
 - get a free API key from [opentransportdata.swiss](https://opentransportdata.swiss/dev-dashboard)
-- add your key inside `OpenTransportSwissDepartures/ViewController.swift`, search for `let apiToken = "VDV_431_KEY"` line
+- add your key inside [OpenTransportSwissDepartures/ViewController.swift](OpenTransportSwissDepartures/ViewController.swift)
 - build and run, you should see the departures for Zürich HB, stop_id = [8503000](https://opentransportdata.swiss/en/dataset/didok)
 
 ![App running in the iOS simulator](https://api.monosnap.com/rpc/file/download?id=ifjuVWXpTQp1ShCMU3hXTWnXTTrcbH)
