@@ -31,7 +31,7 @@ Until then you have to import the library manually:
 >       })
 >     }
 
-- check `OpenTransportSwissDepartures/ODPSwiss/ODPSwissModels.swift` for more info about the [GTFS](https://developers.google.com/transit/gtfs/reference/) and ODPCH models used
+- check [ODPSwissModels.swift](OpenTransportSwissDepartures/ODPSwiss/ODPSwissModels.swift) for more info about the [GTFS](https://developers.google.com/transit/gtfs/reference/) and ODPCH models used
 
 ## Contact
 
