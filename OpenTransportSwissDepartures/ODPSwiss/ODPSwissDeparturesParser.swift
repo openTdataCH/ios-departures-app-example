@@ -121,8 +121,16 @@ extension ODPSwissDeparturesParser: XMLParserDelegate {
             currentXMLTripStopTime?.arrivalTime = parseDepartureDate(string: foundCharacters)
         }
         
+        if currentPath == xmlTripNextStopLiveArrivalPath() {
+            currentXMLTripStopTime?.arrivalRealTime = parseDepartureDate(string: foundCharacters)
+        }
+        
         if currentPath == xmlTripNextStopDeparturePath() {
             currentXMLTripStopTime?.departureTime = parseDepartureDate(string: foundCharacters)
+        }
+        
+        if currentPath == xmlTripNextStopLiveDeparturePath() {
+            currentXMLTripStopTime?.departureRealTime = parseDepartureDate(string: foundCharacters)
         }
         
         if currentPath == xmlTripNextStopPath() {
@@ -243,7 +251,9 @@ extension ODPSwissDeparturesParser {
                 let stopTime = GTFS_StopTime(tripId: tripId, stopId: nextStopId)
                 stopTime.stopName = xmlNextStopTime.stopName
                 stopTime.arrivalTime = xmlNextStopTime.arrivalTime
+                stopTime.arrivalRealTime = xmlNextStopTime.arrivalRealTime
                 stopTime.departureTime = xmlNextStopTime.departureTime
+                stopTime.departureRealTime = xmlNextStopTime.departureRealTime
                 
                 tripDeparture.nextStops?.append(stopTime)
             }
@@ -261,6 +271,8 @@ extension ODPSwissDeparturesParser {
         return "/Trias/ServiceDelivery/DeliveryPayload/StopEventResponse/StopEventResult"
     }
     
+    // ./StopEvent/Service
+    // Trip service info
     internal func xmlTripJourneyRefPath() -> String {
         return xmlTripPath() + "/StopEvent/Service/JourneyRef"
     }
@@ -281,6 +293,12 @@ extension ODPSwissDeparturesParser {
         return xmlTripPath() + "/StopEvent/Service/PublishedLineName/Text"
     }
     
+    internal func xmlTripDestination() -> String {
+        return xmlTripPath() + "/StopEvent/Service/DestinationText/Text"
+    }
+    
+    // ./StopEvent/ThisCall/CallAtStop
+    // Current stop
     internal func xmlTripStopStationId() -> String {
         return xmlTripPath() + "/StopEvent/ThisCall/CallAtStop/StopPointRef"
     }
@@ -293,23 +311,33 @@ extension ODPSwissDeparturesParser {
         return xmlTripPath() + "/StopEvent/ThisCall/CallAtStop/ServiceDeparture/EstimatedTime"
     }
     
-    internal func xmlTripDestination() -> String {
-        return xmlTripPath() + "/StopEvent/Service/DestinationText/Text"
-    }
-    
-    internal func xmlTripNextStopPath() ->String {
+    // ./StopEvent/OnwardCall/CallAtStop
+    // Next stop(s)
+    internal func xmlTripNextStopPath() -> String {
         return xmlTripPath() + "/StopEvent/OnwardCall/CallAtStop"
     }
     
-    internal func xmlTripNextStopNamePath() ->String {
-        return xmlTripPath() + "/StopEvent/OnwardCall/CallAtStop/StopPointName/Text"
+    internal func xmlTripNextStopStationIdPath() -> String {
+        return xmlTripNextStopPath() + "/StopPointRef"
     }
     
-    internal func xmlTripNextStopArrivalPath() ->String {
-        return xmlTripPath() + "/StopEvent/OnwardCall/CallAtStop/ServiceArrival/TimetabledTime"
+    internal func xmlTripNextStopNamePath() -> String {
+        return xmlTripNextStopPath() + "/StopPointName/Text"
     }
     
-    internal func xmlTripNextStopDeparturePath() ->String {
-        return xmlTripPath() + "/StopEvent/OnwardCall/CallAtStop/ServiceDeparture/TimetabledTime"
+    internal func xmlTripNextStopArrivalPath() -> String {
+        return xmlTripNextStopPath() + "/ServiceArrival/TimetabledTime"
+    }
+    
+    internal func xmlTripNextStopLiveArrivalPath() -> String {
+        return xmlTripNextStopPath() + "/ServiceArrival/EstimatedTime"
+    }
+    
+    internal func xmlTripNextStopDeparturePath() -> String {
+        return xmlTripNextStopPath() + "/ServiceDeparture/TimetabledTime"
+    }
+    
+    internal func xmlTripNextStopLiveDeparturePath() -> String {
+        return xmlTripNextStopPath() + "/ServiceDeparture/EstimatedTime"
     }
 }

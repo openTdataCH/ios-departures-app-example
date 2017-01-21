@@ -30,6 +30,8 @@ class ODPCH_XML_TripDeparture: NSObject {
     var vehicleType: String?
     var mainVehicleType: String?
     var tripLineNumber: String?
+    var tripStopArrivalTime: Date?
+    var tripStopLiveArrivalTime: Date?
     var tripStopDepartureTime: Date?
     var tripStopLiveDepartureTime: Date?
     var tripDestination: String?
@@ -38,9 +40,12 @@ class ODPCH_XML_TripDeparture: NSObject {
 }
 
 class ODPCH_XML_TripDepartureStopTime: NSObject {
+    var stopId: String?
     var stopName: String?
     var arrivalTime: Date?
+    var arrivalRealTime: Date?
     var departureTime: Date?
+    var departureRealTime: Date?
 }
 
 // Variation of https://developers.google.com/transit/gtfs/reference/trips-file
@@ -69,6 +74,20 @@ class GTFS_StopTime: NSObject {
     var stopName: String?
     
     var arrivalTime: Date?
+    var arrivalRealTime: Date? {
+        didSet {
+            // simpler logic than departureRealTime.didSet{}
+            // TODO - still can we reuse this logic ?
+            guard
+                let arrivalTime = arrivalTime,
+                let arrivalRealTime = arrivalRealTime
+            else { return }
+            
+            let delay = Int(arrivalRealTime.timeIntervalSince(arrivalTime) / 60)
+            delayArrivalMinutes = delay
+        }
+    }
+    var delayArrivalMinutes: Int?
     var departureTime: Date?
     var departureRealTime: Date? {
         didSet {
