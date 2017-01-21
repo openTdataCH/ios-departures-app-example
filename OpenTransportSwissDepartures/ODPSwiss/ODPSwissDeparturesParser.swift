@@ -109,6 +109,10 @@ extension ODPSwissDeparturesParser: XMLParserDelegate {
             currentXMLTrip?.tripDestination = foundCharacters
         }
         
+        if currentPath == xmlTripNextStopStationIdPath() {
+            currentXMLTripStopTime?.stopId = foundCharacters
+        }
+        
         if currentPath == xmlTripNextStopNamePath() {
             currentXMLTripStopTime?.stopName = foundCharacters
         }
@@ -234,8 +238,7 @@ extension ODPSwissDeparturesParser {
         if let xmlNextStopTimes = currentXMLTrip?.nextStopTimes {
             tripDeparture.nextStops = []
             for xmlNextStopTime in xmlNextStopTimes {
-                // no stopId offered for now in /StopEvent/OnwardCall/CallAtStop
-                let nextStopId = "0"
+                guard let nextStopId = xmlNextStopTime.stopId else { continue }
                 
                 let stopTime = GTFS_StopTime(tripId: tripId, stopId: nextStopId)
                 stopTime.stopName = xmlNextStopTime.stopName
@@ -276,6 +279,10 @@ extension ODPSwissDeparturesParser {
     
     internal func xmlTripLineNumberPath() -> String {
         return xmlTripPath() + "/StopEvent/Service/PublishedLineName/Text"
+    }
+    
+    internal func xmlTripStopStationId() -> String {
+        return xmlTripPath() + "/StopEvent/ThisCall/CallAtStop/StopPointRef"
     }
     
     internal func xmlTripStopDepartureTime() -> String {
